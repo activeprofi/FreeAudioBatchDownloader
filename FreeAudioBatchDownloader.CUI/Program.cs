@@ -2,10 +2,10 @@
 {
     internal class Program
     {
-        private static ConsoleColor backColor;
-        private static ConsoleColor foreColor;
+        private static ConsoleColor _backColor;
+        private static ConsoleColor _foreColor;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             SetConsoleColors(ConsoleColor.DarkBlue, ConsoleColor.White);
             Greetings();
@@ -14,8 +14,8 @@
 
         private static void SetConsoleColors(ConsoleColor backColor, ConsoleColor foreColor)
         {
-            Program.backColor = Console.BackgroundColor;
-            Program.foreColor = Console.ForegroundColor;
+            Program._backColor = Console.BackgroundColor;
+            Program._foreColor = Console.ForegroundColor;
 
             Console.BackgroundColor = backColor;
             Console.ForegroundColor = foreColor;
@@ -23,8 +23,8 @@
 
         private static void RestoreConsoleColors()
         {
-            Console.BackgroundColor = backColor;
-            Console.ForegroundColor = foreColor;
+            Console.BackgroundColor = _backColor;
+            Console.ForegroundColor = _foreColor;
         }
 
         static void Greetings()
