@@ -16,10 +16,13 @@
 
         private string DownloadPageHtml()
         {
-            throw new NotImplementedException();
+            HttpClient httpClient = new HttpClient();
+            string htmlCode = httpClient.GetStringAsync(Url).Result;
+
+            return htmlCode;
         }
 
-        public string HtmlCode { get; set; }
+        public string HtmlCode { get; private set; }
 
         public WebPage(string url)
         {

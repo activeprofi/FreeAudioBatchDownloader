@@ -1,4 +1,6 @@
-﻿namespace FreeAudioBatchDownloader.CUI
+﻿using System.Text.RegularExpressions;
+
+namespace FreeAudioBatchDownloader.CUI
 {
     internal class Program
     {
@@ -9,7 +11,83 @@
         {
             SetConsoleColors(ConsoleColor.DarkBlue, ConsoleColor.White);
             Greetings();
+            (string url, string ext, string pathToSave) = GetUserInput();
             RestoreConsoleColors();
+        }
+
+        private static (string url, string ext, string pathToSave) GetUserInput()
+        {
+            Console.WriteLine("Enter some data.");
+
+            string url;
+            while (true)
+            {
+                Console.Write("Enter url to download from: ");
+                url = Console.ReadLine() ?? string.Empty;
+
+                if (ValidateUrl(url))
+                {
+                    break;
+                }
+
+                Console.WriteLine();
+            }
+
+            string ext;
+            while (true)
+            {
+                Console.Write("Enter file extension which you want to download:");
+                ext = Console.ReadLine() ?? string.Empty;
+
+                if (ValidateExt(ext))
+                {
+                    break;
+                }
+
+                Console.WriteLine();
+            }
+
+            string pathToSave;
+            while (true)
+            {
+                Console.Write("Enter path on your PC where to download files: ");
+                pathToSave = Console.ReadLine() ?? string.Empty;
+
+                if (ValidatePath(pathToSave))
+                {
+                    break;
+                }
+
+                Console.WriteLine();
+            }
+
+            return (url, ext, pathToSave);
+        }
+
+        private static bool ValidatePath(string pathToSave)
+        {
+            if (!Directory.Exists(pathToSave))
+            {
+                Directory.CreateDirectory(pathToSave);
+            }
+
+            return true;
+        }
+
+        private static bool ValidateExt(string ext)
+        {
+            Regex validateExt = new Regex(@"^\.[a-zA-Z0-9]{3,4}$");
+
+            return validateExt.IsMatch(ext);
+        }
+
+        private static bool ValidateUrl(string url)
+        {
+            Regex validateUrl =
+                new Regex(
+                    @"^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$");
+
+            return validateUrl.IsMatch(url);
         }
 
         private static void SetConsoleColors(ConsoleColor backColor, ConsoleColor foreColor)
