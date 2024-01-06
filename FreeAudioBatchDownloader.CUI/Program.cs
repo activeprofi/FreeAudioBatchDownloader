@@ -25,7 +25,7 @@ namespace FreeAudioBatchDownloader.CUI
                 Console.Write("Enter url to download from: ");
                 url = Console.ReadLine() ?? string.Empty;
 
-                if (ValidateUrl(url))
+                if (IsValidUrl(url))
                 {
                     break;
                 }
@@ -39,7 +39,7 @@ namespace FreeAudioBatchDownloader.CUI
                 Console.Write("Enter file extension which you want to download:");
                 ext = Console.ReadLine() ?? string.Empty;
 
-                if (ValidateExt(ext))
+                if (IsValidExt(ext))
                 {
                     break;
                 }
@@ -53,7 +53,7 @@ namespace FreeAudioBatchDownloader.CUI
                 Console.Write("Enter path on your PC where to download files: ");
                 pathToSave = Console.ReadLine() ?? string.Empty;
 
-                if (ValidatePath(pathToSave))
+                if (IsValidPath(pathToSave))
                 {
                     break;
                 }
@@ -64,7 +64,7 @@ namespace FreeAudioBatchDownloader.CUI
             return (url, ext, pathToSave);
         }
 
-        private static bool ValidatePath(string pathToSave)
+        private static bool IsValidPath(string pathToSave)
         {
             if (!Directory.Exists(pathToSave))
             {
@@ -74,14 +74,14 @@ namespace FreeAudioBatchDownloader.CUI
             return true;
         }
 
-        private static bool ValidateExt(string ext)
+        private static bool IsValidExt(string ext)
         {
             Regex validateExt = new Regex(@"^\.[a-zA-Z0-9]{3,4}$");
 
             return validateExt.IsMatch(ext);
         }
 
-        private static bool ValidateUrl(string url)
+        private static bool IsValidUrl(string url)
         {
             Regex validateUrl =
                 new Regex(
@@ -92,8 +92,8 @@ namespace FreeAudioBatchDownloader.CUI
 
         private static void SetConsoleColors(ConsoleColor backColor, ConsoleColor foreColor)
         {
-            Program._backColor = Console.BackgroundColor;
-            Program._foreColor = Console.ForegroundColor;
+            _backColor = Console.BackgroundColor;
+            _foreColor = Console.ForegroundColor;
 
             Console.BackgroundColor = backColor;
             Console.ForegroundColor = foreColor;
@@ -105,7 +105,7 @@ namespace FreeAudioBatchDownloader.CUI
             Console.ForegroundColor = _foreColor;
         }
 
-        static void Greetings()
+        private static void Greetings()
         {
             Console.WriteLine("Hello and welcome in");
             Console.WriteLine("FABD(Free Audio Batch Downloader)");

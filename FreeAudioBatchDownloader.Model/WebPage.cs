@@ -2,6 +2,13 @@
 {
     public class WebPage
     {
+        private readonly object _lockObject = new();
+
+        public WebPage(string url)
+        {
+            Url = url;
+        }
+
         private string _url;
 
         public string Url
@@ -10,23 +17,28 @@
             set
             {
                 _url = value;
-                HtmlCode = DownloadPageHtml();
+                HtmlCode = DownloadHtml();
             }
-        }
-
-        private string DownloadPageHtml()
-        {
-            HttpClient httpClient = new HttpClient();
-            string htmlCode = httpClient.GetStringAsync(Url).Result;
-
-            return htmlCode;
         }
 
         public string HtmlCode { get; private set; }
 
-        public WebPage(string url)
+        private string DownloadHtml()
         {
-            Url = url;
+            var htmlCode = String.Empty;
+            Thread thread = new(() =>
+            {
+                HttpClient httpClient = new();
+                lock (_lockObject)
+                {
+                    htmlCode = httpClient.GetStringAsync(Url).Result;
+                }
+            });
+
+            thread.Start();
+            thread.Join();
+
+            return htmlCode;
         }
     }
 }
